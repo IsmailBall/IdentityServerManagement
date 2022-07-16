@@ -1,4 +1,6 @@
 ﻿using IdentityServer4.Models;
+using IdentityServer4.Test;
+using System.Security.Claims;
 
 namespace IdentityServerManagement.AuthServer
 {
@@ -32,7 +34,47 @@ namespace IdentityServerManagement.AuthServer
                 },
             };
         }
+        public static IEnumerable<IdentityResource> GetIdentityResources()
+        {
 
+            var identityResources = new List<IdentityResource>()
+            {
+                new IdentityResources.OpenId(),
+                new IdentityResources.Profile()
+            };
+
+            return identityResources;
+        }
+        public static IEnumerable<TestUser> GetTestUsers()
+        {
+            var testUsers = new List<TestUser>()
+            {
+                new TestUser()
+                {
+                    SubjectId = "1",
+                    Username = "sncrbl",
+                    Password = "psw",
+                    Claims = new List<Claim>()
+                    {
+                        new Claim("given_name","Sancar"),
+                        new Claim("family_name", "Bal")
+                    }
+                },
+                new TestUser()
+                {
+                    SubjectId = "2",
+                    Username = "smlbl",
+                    Password = "psw",
+                    Claims = new List<Claim>()
+                    {
+                        new Claim("given_name","Ismail"),
+                        new Claim("family_name", "Bal")
+                    }
+                }
+            };
+
+            return testUsers;
+        }
         public static IEnumerable<Client> GetClients()
         {
             return new List<Client>()
@@ -52,6 +94,17 @@ namespace IdentityServerManagement.AuthServer
                     ClientSecrets = new [] { new Secret("secret".Sha256()) },
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
                     AllowedScopes = new [] { "api_one_read", "api_one_update", "api_two_write" }
+                },
+                new Client()
+                {
+                    ClientId = "ClientOne-Mvc",
+                    RequirePkce = false,
+                    ClientName = "ClientOne MVC Application",
+                    ClientSecrets = new [] { new Secret("secret".Sha256()) },
+                    AllowedGrantTypes = GrantTypes.Hybrid,
+                    RedirectUris = new List<string>(){ "https://localhost:7208/signin-oidc" },
+                    AllowedScopes = new List<string>(){IdentityServer4.IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServer4.IdentityServerConstants.StandardScopes.Profile}
                 }
             };
         }

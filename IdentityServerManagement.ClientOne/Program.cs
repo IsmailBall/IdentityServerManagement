@@ -1,5 +1,18 @@
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddAuthentication(opt =>
+{
+    opt.DefaultScheme = "Cookies";
+    opt.DefaultChallengeScheme = "oidc";
+}).AddCookie("Cookies").AddOpenIdConnect("oidc", opts =>
+{
+    opts.SignInScheme = "Cookies";
+    opts.Authority = "https://localhost:7179";
+    opts.ClientId = "ClientOne-Mvc";
+    opts.ClientSecret = "secret";
+    opts.ResponseType = "code id_token";
+});
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -18,6 +31,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
