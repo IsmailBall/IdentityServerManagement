@@ -1,0 +1,7 @@
+API-1 -> "applicationUrl": "https://localhost:7242;http://localhost:5242"
+API-2 -> "applicationUrl": "https://localhost:7095;http://localhost:5095"
+
+Client-1 -> "applicationUrl": "https://localhost:7208;http://localhost:5208"
+Client-2 -> "applicationUrl": "https://localhost:7100;http://localhost:5100"
+
+Auth-Server -> "applicationUrl": "https://localhost:7179;http://localhost:5179"
