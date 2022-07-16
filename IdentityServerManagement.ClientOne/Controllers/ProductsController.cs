@@ -1,5 +1,6 @@
 ﻿using IdentityModel.Client;
 using IdentityServerManagement.ClientOne.Models;
+using IdentityServerManagement.ClientOne.Utils.Helper;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -18,13 +19,7 @@ namespace IdentityServerManagement.ClientOne.Controllers
         {
             HttpClient client = new HttpClient();
 
-            var discovery = await client.GetDiscoveryDocumentAsync("https://localhost:7179");
-
-            ClientCredentialsTokenRequest clientCredentialsTokenRequest = new();
-            clientCredentialsTokenRequest.ClientId = _configuration["Client:client_id"];
-            clientCredentialsTokenRequest.ClientSecret = _configuration["Client:client_secret"];
-            clientCredentialsTokenRequest.Address = discovery.TokenEndpoint;
-
+            var clientCredentialsTokenRequest = await ClientCredentialsTokenHelper.GetClientCredentialsTokenRequest(client, _configuration);
             var token = await client.RequestClientCredentialsTokenAsync(clientCredentialsTokenRequest);
 
             client.SetBearerToken(token.AccessToken);
@@ -38,8 +33,6 @@ namespace IdentityServerManagement.ClientOne.Controllers
                 var content = await response.Content.ReadAsStringAsync();
                 products = JsonConvert.DeserializeObject<List<Product>>(content);
             }
-
-
             return View(products);
         }
     }

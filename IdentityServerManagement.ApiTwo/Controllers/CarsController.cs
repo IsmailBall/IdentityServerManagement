@@ -1,6 +1,5 @@
 ﻿using IdentityServerManagement.ApiTwo.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityServerManagement.ApiTwo.Controllers

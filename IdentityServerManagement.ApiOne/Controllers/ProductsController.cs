@@ -1,6 +1,5 @@
 ﻿using IdentityServerManagement.ApiOne.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityServerManagement.ApiOne.Controllers
