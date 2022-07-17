@@ -40,7 +40,9 @@ namespace IdentityServerManagement.AuthServer
             var identityResources = new List<IdentityResource>()
             {
                 new IdentityResources.OpenId(),
-                new IdentityResources.Profile()
+                new IdentityResources.Profile(),
+                new IdentityResource(){ Name="CountryAndCity", DisplayName="Country and City",Description="Country And City Information of the User", UserClaims= new [] {"country","city"}},
+                new IdentityResource(){ Name="Roles",DisplayName="Roles", Description="User Roles", UserClaims=new [] { "role"} }
             };
 
             return identityResources;
@@ -57,7 +59,10 @@ namespace IdentityServerManagement.AuthServer
                     Claims = new List<Claim>()
                     {
                         new Claim("given_name","Sancar"),
-                        new Claim("family_name", "Bal")
+                        new Claim("family_name", "Bal"),
+                        new Claim("country","Turkey"),
+                        new Claim("city","Ankara"),
+                        new Claim("role","admin")
                     }
                 },
                 new TestUser()
@@ -68,7 +73,10 @@ namespace IdentityServerManagement.AuthServer
                     Claims = new List<Claim>()
                     {
                         new Claim("given_name","Ismail"),
-                        new Claim("family_name", "Bal")
+                        new Claim("family_name", "Bal"),
+                        new Claim("country","Turkey"),
+                        new Claim("city","Istanbul"),
+                        new Claim("role","customer")
                     }
                 }
             };
@@ -103,8 +111,14 @@ namespace IdentityServerManagement.AuthServer
                     ClientSecrets = new [] { new Secret("secret".Sha256()) },
                     AllowedGrantTypes = GrantTypes.Hybrid,
                     RedirectUris = new List<string>(){ "https://localhost:7208/signin-oidc" },
-                    AllowedScopes = new List<string>(){IdentityServer4.IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServer4.IdentityServerConstants.StandardScopes.Profile}
+                    PostLogoutRedirectUris=new List<string>{ "https://localhost:7208/signout-callback-oidc" },
+                    AllowedScopes = new List<string>(){IdentityServer4.IdentityServerConstants.StandardScopes.OpenId,IdentityServer4.IdentityServerConstants.StandardScopes.Profile,"api_one_read",IdentityServer4.IdentityServerConstants.StandardScopes.OfflineAccess,"CountryAndCity","Roles"},
+                    AllowOfflineAccess = true,
+                    AccessTokenLifetime=2*60*60,
+                    RefreshTokenUsage=TokenUsage.ReUse,
+                    RefreshTokenExpiration=TokenExpiration.Absolute,
+                    AbsoluteRefreshTokenLifetime=(int) (DateTime.Now.AddDays(60)-DateTime.Now).TotalSeconds,
+                    RequireConsent = true,
                 }
             };
         }
