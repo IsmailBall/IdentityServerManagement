@@ -1,18 +1,34 @@
 using IdentityServerManagement.AuthServer;
+using IdentityServerManagement.AuthServer.Models;
+using IdentityServerManagement.AuthServer.Repo;
+using IdentityServerManagement.AuthServer.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddScoped<ICustomUserRepository, CustomUserRepository>();
+
+//DbContext
+
+var path = builder.Configuration["ConnectionString:SqlServer"];
+
+builder.Services.AddDbContext<CustomerDbContext>(opt =>
+{
+    opt.UseSqlServer(path);
+});
 
 //Identity Server Configuration
-builder.Services.AddIdentityServer()
+builder.Services
+    .AddIdentityServer()
     .AddInMemoryApiResources(ConfigurationIdentity.GetApiResources())
     .AddInMemoryApiScopes(ConfigurationIdentity.GetApiScopes())
     .AddInMemoryClients(ConfigurationIdentity.GetClients())
     .AddInMemoryIdentityResources(ConfigurationIdentity.GetIdentityResources())
-    .AddTestUsers(ConfigurationIdentity.GetTestUsers().ToList())
+    //.AddTestUsers(ConfigurationIdentity.GetTestUsers().ToList())
+    .AddProfileService<CustomProfileService>()
     .AddDeveloperSigningCredential();
 
 var app = builder.Build();

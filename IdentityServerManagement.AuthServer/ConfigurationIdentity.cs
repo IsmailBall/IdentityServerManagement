@@ -39,6 +39,7 @@ namespace IdentityServerManagement.AuthServer
 
             var identityResources = new List<IdentityResource>()
             {
+                new IdentityResources.Email(),
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
                 new IdentityResource(){ Name="CountryAndCity", DisplayName="Country and City",Description="Country And City Information of the User", UserClaims= new [] {"country","city"}},
@@ -112,7 +113,7 @@ namespace IdentityServerManagement.AuthServer
                     AllowedGrantTypes = GrantTypes.Hybrid,
                     RedirectUris = new List<string>(){ "https://localhost:7208/signin-oidc" },
                     PostLogoutRedirectUris=new List<string>{ "https://localhost:7208/signout-callback-oidc" },
-                    AllowedScopes = new List<string>(){IdentityServer4.IdentityServerConstants.StandardScopes.OpenId,IdentityServer4.IdentityServerConstants.StandardScopes.Profile,"api_one_read",IdentityServer4.IdentityServerConstants.StandardScopes.OfflineAccess,"CountryAndCity","Roles"},
+                    AllowedScopes = new List<string>(){IdentityServer4.IdentityServerConstants.StandardScopes.OpenId,IdentityServer4.IdentityServerConstants.StandardScopes.Profile,"api_one_read", IdentityServer4.IdentityServerConstants.StandardScopes.Email,  IdentityServer4.IdentityServerConstants.StandardScopes.OfflineAccess,"CountryAndCity","Roles"},
                     AllowOfflineAccess = true,
                     AccessTokenLifetime=2*60*60,
                     RefreshTokenUsage=TokenUsage.ReUse,
