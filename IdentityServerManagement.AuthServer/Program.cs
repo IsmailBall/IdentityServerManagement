@@ -29,6 +29,7 @@ builder.Services
     .AddInMemoryIdentityResources(ConfigurationIdentity.GetIdentityResources())
     //.AddTestUsers(ConfigurationIdentity.GetTestUsers().ToList())
     .AddProfileService<CustomProfileService>()
+    .AddResourceOwnerValidator<ResourceOwnerPasswordValidator>()
     .AddDeveloperSigningCredential();
 
 var app = builder.Build();

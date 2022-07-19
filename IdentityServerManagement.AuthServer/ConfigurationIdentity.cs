@@ -1,4 +1,5 @@
-﻿using IdentityServer4.Models;
+﻿using IdentityServer4;
+using IdentityServer4.Models;
 using IdentityServer4.Test;
 using System.Security.Claims;
 
@@ -113,13 +114,27 @@ namespace IdentityServerManagement.AuthServer
                     AllowedGrantTypes = GrantTypes.Hybrid,
                     RedirectUris = new List<string>(){ "https://localhost:7208/signin-oidc" },
                     PostLogoutRedirectUris=new List<string>{ "https://localhost:7208/signout-callback-oidc" },
-                    AllowedScopes = new List<string>(){IdentityServer4.IdentityServerConstants.StandardScopes.OpenId,IdentityServer4.IdentityServerConstants.StandardScopes.Profile,"api_one_read", IdentityServer4.IdentityServerConstants.StandardScopes.Email,  IdentityServer4.IdentityServerConstants.StandardScopes.OfflineAccess,"CountryAndCity","Roles"},
+                    AllowedScopes = new List<string>(){IdentityServerConstants.StandardScopes.OpenId,IdentityServerConstants.StandardScopes.Profile,"api_one_read", IdentityServerConstants.StandardScopes.Email,  IdentityServerConstants.StandardScopes.OfflineAccess,"CountryAndCity","Roles"},
                     AllowOfflineAccess = true,
                     AccessTokenLifetime=2*60*60,
                     RefreshTokenUsage=TokenUsage.ReUse,
                     RefreshTokenExpiration=TokenExpiration.Absolute,
                     AbsoluteRefreshTokenLifetime=(int) (DateTime.Now.AddDays(60)-DateTime.Now).TotalSeconds,
                     RequireConsent = true,
+                },
+                new Client()
+                 {
+                    ClientId = "Client1-ResourceOwner-Mvc",
+
+                    ClientName="Client 1 app  mvc uygulaması",
+                    ClientSecrets=new[] {new Secret("secret".Sha256())},
+                    AllowedGrantTypes= GrantTypes.ResourceOwnerPassword,
+                    AllowedScopes = { IdentityServerConstants.StandardScopes.Email, IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile, "api1.read",IdentityServerConstants.StandardScopes.OfflineAccess,"CountryAndCity","Roles"},
+                    AccessTokenLifetime=2*60*60,
+                    AllowOfflineAccess=true,
+                    RefreshTokenUsage=TokenUsage.ReUse,
+                    RefreshTokenExpiration=TokenExpiration.Absolute,
+                    AbsoluteRefreshTokenLifetime=(int) (DateTime.Now.AddDays(60)-DateTime.Now).TotalSeconds,
                 }
             };
         }

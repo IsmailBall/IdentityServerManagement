@@ -9,37 +9,39 @@ builder.Services.AddScoped<IApiResourceHttpClient, ApiResourceHttpClient>();
 builder.Services.AddAuthentication(opt =>
 {
     opt.DefaultScheme = "Cookies";
-    opt.DefaultChallengeScheme = "oidc";
+    //opt.DefaultChallengeScheme = "oidc";
 }).AddCookie("Cookies", opts =>
 {
     opts.AccessDeniedPath = "/Home/AccessDenied";
+    opts.LoginPath = "/Login/LogIn";
 
-}).AddOpenIdConnect("oidc", opts =>
-{
-    opts.SignInScheme = "Cookies";
-    opts.Authority = "https://localhost:7179";
-    opts.ClientId = "ClientOne-Mvc";
-    opts.ClientSecret = "secret";
-    opts.ResponseType = "code id_token";
-    opts.GetClaimsFromUserInfoEndpoint = true;
-    opts.SaveTokens = true;
-
-    opts.Scope.Add("api_one_read");
-    opts.Scope.Add("offline_access");
-    opts.Scope.Add("CountryAndCity");
-    opts.Scope.Add("Roles");
-    opts.Scope.Add("email");
-
-    opts.ClaimActions.MapUniqueJsonKey("country", "country");
-    opts.ClaimActions.MapUniqueJsonKey("city", "city");
-    opts.ClaimActions.MapUniqueJsonKey("role", "role");
-
-    opts.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-    {
-        RoleClaimType = "role",
-        NameClaimType ="name"
-    };
 });
+//.AddOpenIdConnect("oidc", opts =>
+//{
+//    opts.SignInScheme = "Cookies";
+//    opts.Authority = "https://localhost:7179";
+//    opts.ClientId = "ClientOne-Mvc";
+//    opts.ClientSecret = "secret";
+//    opts.ResponseType = "code id_token";
+//    opts.GetClaimsFromUserInfoEndpoint = true;
+//    opts.SaveTokens = true;
+
+//    opts.Scope.Add("api_one_read");
+//    opts.Scope.Add("offline_access");
+//    opts.Scope.Add("CountryAndCity");
+//    opts.Scope.Add("Roles");
+//    opts.Scope.Add("email");
+
+//    opts.ClaimActions.MapUniqueJsonKey("country", "country");
+//    opts.ClaimActions.MapUniqueJsonKey("city", "city");
+//    opts.ClaimActions.MapUniqueJsonKey("role", "role");
+
+//    opts.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+//    {
+//        RoleClaimType = "role",
+//        NameClaimType = "name"
+//    };
+//});
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

@@ -22,7 +22,7 @@ namespace IdentityServerManagement.ClientOne.Controllers
 
         public async Task<IActionResult> Index()
         {
-            
+
             HttpClient client = await _apiResourceHttpClient.GetHttpClient();
             List<Product> products = new List<Product>();
 
